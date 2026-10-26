@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
 using WebApplication1.Repositories.Implementations;
 using WebApplication1.Repositories.Interfaces;
 using WebApplication1.Services.Implementations;
@@ -15,6 +17,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+
+builder.Services.AddDbContext<WebApplication1Context>(options =>
+    options.UseSqlite(builder.Configuration["ConnectionStrings:WebApplication1ContextDBConnectionString"]));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 
